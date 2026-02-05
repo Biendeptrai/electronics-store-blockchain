@@ -3,12 +3,14 @@ const OrderForm = ({
   setProductId,
   amountVND,
   setAmountVND,
+  buyer,
+  setBuyer,
   onSubmit,
   loading
 }) => {
   return (
     <div className="glass-card">
-      <h3 className="card-title">➕ Tạo đơn hàng mới</h3>
+      <h3 className="card-title">➕ Tạo đơn hàng mới (ADMIN)</h3>
 
       <input
         className="input"
@@ -24,12 +26,19 @@ const OrderForm = ({
         onChange={(e) => setAmountVND(e.target.value)}
       />
 
+      <input
+        className="input"
+        placeholder="Địa chỉ ví khách hàng (Buyer)"
+        value={buyer}
+        onChange={(e) => setBuyer(e.target.value)}
+      />
+
       <button
         className="primary-btn"
         onClick={onSubmit}
         disabled={loading}
       >
-        {loading ? '⏳ Đang ghi...' : 'Ghi Order lên Blockchain'}
+        {loading ? "⏳ Đang ghi..." : "Ghi Order lên Blockchain"}
       </button>
     </div>
   );

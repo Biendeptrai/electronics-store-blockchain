@@ -1,67 +1,66 @@
-.App {
-  text-align: center;
+/* ================= RESET & GLOBAL ================= */
+* {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 body {
   margin: 0;
   font-family: 'Inter', system-ui, sans-serif;
-  background: radial-gradient(circle at top, #020617, #020617);
+  background:
+    radial-gradient(circle at top left, #1e293b, transparent 40%),
+    radial-gradient(circle at bottom right, #020617, transparent 40%),
+    #020617;
+  color: #e5e7eb;
 }
 
+/* ================= LAYOUT ================= */
 .container {
   max-width: 1100px;
   margin: auto;
   padding: 40px 20px;
+  text-align: center;
 }
 
+/* ================= HEADER ================= */
 .header {
-  text-align: center;
   margin-bottom: 40px;
 }
 
 .header h1 {
   font-size: 36px;
   color: #38bdf8;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
 }
 
 .header p {
   color: #94a3b8;
 }
 
+/* ================= DASHBOARD TITLES ================= */
+.title-neon {
+  font-size: 28px;
+  margin: 20px 0;
+  color: #38bdf8;
+  text-shadow:
+    0 0 8px rgba(56, 189, 248, 0.7),
+    0 0 18px rgba(56, 189, 248, 0.4);
+}
+
+/* ================= GLASS CARD ================= */
+.glass-card {
+  width: 420px;
+  margin: 24px auto;
+  background: rgba(2, 6, 23, 0.75);
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 0 30px rgba(56, 189, 248, 0.08),
+    0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ================= STATS ================= */
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -74,12 +73,11 @@ body {
   border: 1px solid #1e293b;
   border-radius: 14px;
   padding: 20px;
-  text-align: center;
 }
 
 .stat-card h3 {
-  color: #94a3b8;
   font-size: 14px;
+  color: #94a3b8;
 }
 
 .stat-card p {
@@ -88,40 +86,88 @@ body {
   font-weight: bold;
 }
 
-.card {
-  background: linear-gradient(180deg, #020617, #020617cc);
-  border: 1px solid #1e293b;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 20px;
+/* ================= FORM ================= */
+.card-title {
+  margin-bottom: 14px;
+  color: #38bdf8;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 12px;
-}
-
-input {
-  background: #020617;
-  border: 1px solid #334155;
-  color: #e5e7eb;
+.input {
+  width: 100%;
   padding: 12px;
+  margin-top: 10px;
   border-radius: 10px;
+  border: 1px solid #334155;
+  background: #020617;
+  color: #e5e7eb;
+  transition: all 0.25s ease;
 }
 
-button.primary {
+.input:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+}
+
+/* ================= BUTTON ================= */
+.primary-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 12px;
   background: linear-gradient(135deg, #22c55e, #16a34a);
   border: none;
   color: #022c22;
-  padding: 12px 20px;
-  border-radius: 10px;
+  font-weight: bold;
   cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.6);
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.9);
+}
+
+.primary-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ================= BADGE ================= */
+.badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
   font-weight: bold;
 }
 
-button.primary:hover {
-  opacity: 0.9;
+.badge.admin {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.badge.user {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+/* ================= ORDER LIST ================= */
+.order-list {
+  margin-top: 30px;
+}
+
+.order-card {
+  text-align: left;
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);
 }
 
 .order-title {
@@ -132,80 +178,24 @@ button.primary:hover {
 }
 
 .order-meta {
-  margin-top: 8px;
-  color: #cbd5f5;
+  margin-top: 6px;
   font-size: 14px;
+  color: #cbd5f5;
 }
 
-.badge {
-  display: inline-block;
-  background: #22c55e22;
-  color: #22c55e;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-}
-body {
-  margin: 0;
-  font-family: 'Inter', system-ui, sans-serif;
-}
-
-.glass-card {
-  width: 420px;
-  background: rgba(2, 6, 23, 0.7);
-  border: 1px solid #334155;
-  border-radius: 14px;
-  padding: 20px;
-  margin-top: 24px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-}
-
-.card-title {
-  margin-bottom: 12px;
-  color: #38bdf8;
-}
-
-.input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 8px;
-  border: 1px solid #334155;
-  background: #020617;
-  color: #e5e7eb;
-}
-
-.input:focus {
-  outline: none;
-  border-color: #38bdf8;
-}
-
-.primary-btn {
-  width: 100%;
-  margin-top: 14px;
-  padding: 12px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #22c55e, #4ade80);
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.primary-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.order-list {
-  margin-top: 30px;
-}
-
-.order-card {
-  text-align: left;
-}
-
+/* ================= TEXT HELPERS ================= */
 .mono {
   font-family: monospace;
   font-size: 13px;
   word-break: break-all;
+}
+
+.text-error {
+  color: #f87171;
+  text-shadow: 0 0 8px rgba(248, 113, 113, 0.6);
+}
+
+.text-success {
+  color: #22c55e;
+  text-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
 }

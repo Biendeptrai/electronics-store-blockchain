@@ -1,43 +1,45 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import { connectWallet } from './services/wallet';
-import OrderForm from './components/OrderForm';
-import OrderList from './components/OrderList';
 import {
   getOrderCount,
   getOrderByIndex,
-  createOrder
+  createOrder,
+  getOwner
 } from './services/blockchain';
+
+// 👇 DASHBOARD
+import AdminDashboard from './pages/AdminDashboard';
+import UserDashboard from './pages/UserDashboard';
 
 const SEPOLIA_CHAIN_ID = '0xaa36a7'; // 11155111
 
 function App() {
   const [wallet, setWallet] = useState('');
+  const [role, setRole] = useState('');
   const [orders, setOrders] = useState([]);
   const [orderCount, setOrderCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // ===== FORM STATE =====
+  // ===== FORM STATE (ADMIN) =====
   const [productId, setProductId] = useState('');
   const [amountVND, setAmountVND] = useState('');
+  const [buyer, setBuyer] = useState('');
   const [txHash, setTxHash] = useState('');
 
   /* ================= AUTO RELOAD KHI ĐỔI MẠNG ================= */
   useEffect(() => {
     if (!window.ethereum) return;
-
     const handleChainChanged = () => window.location.reload();
     window.ethereum.on('chainChanged', handleChainChanged);
-
     return () =>
       window.ethereum.removeListener('chainChanged', handleChainChanged);
   }, []);
 
   /* ================= LOAD ORDERS ================= */
   const loadOrders = async () => {
-    const countBN = await getOrderCount();
-    const total = Number(countBN);
+    const total = await getOrderCount();
     setOrderCount(total);
 
     if (total === 0) {
@@ -68,12 +70,10 @@ function App() {
       setLoading(true);
       setError('');
 
-      // 1️⃣ Kết nối MetaMask
       const address = await connectWallet();
       if (!address) return;
       setWallet(address);
 
-      // 2️⃣ Kiểm tra mạng Sepolia
       const chainId = await window.ethereum.request({
         method: 'eth_chainId'
       });
@@ -83,10 +83,17 @@ function App() {
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: SEPOLIA_CHAIN_ID }]
         });
-        return; // reload lại app
+        return;
       }
 
-      // 3️⃣ Load order
+      // 🔐 CHECK ROLE
+      const owner = await getOwner();
+      if (owner.toLowerCase() === address.toLowerCase()) {
+        setRole('ADMIN');
+      } else {
+        setRole('USER');
+      }
+
       await loadOrders();
     } catch (err) {
       console.error(err);
@@ -96,10 +103,10 @@ function App() {
     }
   };
 
-  /* ================= CREATE ORDER ================= */
+  /* ================= CREATE ORDER (ADMIN) ================= */
   const handleCreateOrder = async () => {
-    if (!productId || !amountVND) {
-      alert('Nhập đầy đủ Product ID và Giá');
+    if (!productId || !amountVND || !buyer) {
+      alert('Nhập đầy đủ Product ID, Giá và Buyer');
       return;
     }
 
@@ -109,17 +116,19 @@ function App() {
 
       const hash = await createOrder(
         Number(productId),
-        Number(amountVND)
+        Number(amountVND),
+        buyer
       );
 
       setTxHash(hash);
       setProductId('');
       setAmountVND('');
+      setBuyer('');
 
       await loadOrders();
     } catch (err) {
       console.error(err);
-      alert('❌ Tạo order thất bại');
+      alert('❌ Tạo order thất bại (chỉ ADMIN được phép)');
     } finally {
       setLoading(false);
     }
@@ -132,52 +141,38 @@ function App() {
         🔐 HỆ THỐNG ĐƠN HÀNG / BẢO HÀNH BLOCKCHAIN
       </h1>
 
-      <p style={styles.subtitle}>
-        Minh bạch dữ liệu đơn hàng bằng Smart Contract
-      </p>
-
       <button style={styles.button} onClick={handleConnectWallet}>
         {wallet
-          ? `Đã kết nối: ${wallet.slice(0, 6)}...${wallet.slice(-4)}`
+          ? `👛 ${wallet.slice(0, 6)}...${wallet.slice(-4)} (${role})`
           : 'Kết nối MetaMask'}
       </button>
 
       {loading && <p>⏳ Đang xử lý...</p>}
       {error && <p style={{ color: '#ef4444' }}>{error}</p>}
 
-      {wallet && (
-        <p style={{ marginTop: 10 }}>
-          📊 Tổng số đơn hàng: <b>{orderCount}</b>
-        </p>
-      )}
-
-      {/* ===== FORM CREATE ORDER ===== */}
-      {wallet && (
-        <OrderForm
+      {/* ===== DASHBOARD THEO ROLE ===== */}
+      {wallet && role === 'ADMIN' && (
+        <AdminDashboard
+          orders={orders}
+          orderCount={orderCount}
           productId={productId}
           setProductId={setProductId}
           amountVND={amountVND}
           setAmountVND={setAmountVND}
-          onSubmit={handleCreateOrder}
+          buyer={buyer}
+          setBuyer={setBuyer}
+          onCreateOrder={handleCreateOrder}
           loading={loading}
+          txHash={txHash}
         />
       )}
 
-      {txHash && (
-        <p style={{ fontSize: 12 }}>
-          Tx:{' '}
-          <a
-            href={`https://sepolia.etherscan.io/tx/${txHash}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {txHash.slice(0, 20)}...
-          </a>
-        </p>
+      {wallet && role === 'USER' && (
+        <UserDashboard
+          orders={orders}
+          orderCount={orderCount}
+        />
       )}
-
-      {/* ===== ORDER LIST ===== */}
-      <OrderList orders={orders} />
     </div>
   );
 }
@@ -194,14 +189,18 @@ const styles = {
     textAlign: 'center',
     padding: '40px'
   },
-  title: { fontSize: '32px', color: '#38bdf8' },
-  subtitle: { color: '#94a3b8', marginBottom: 20 },
+  title: {
+    fontSize: '32px',
+    color: '#38bdf8',
+    marginBottom: '16px'
+  },
   button: {
     padding: '10px 20px',
-    borderRadius: 8,
+    borderRadius: '8px',
     background: '#22c55e',
     border: 'none',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    fontWeight: 'bold'
   }
 };
 

@@ -2,22 +2,10 @@
 pragma solidity ^0.8.20;
 
 contract WarrantyManager {
-
-        address public owner; // 👈 ADMIN
-
-    constructor() {
-        owner = msg.sender; // ví deploy là admin
-    }
-
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Only admin");
-        _;
-    }
-
-    address public owner; // 👈 ADMIN
+    address public owner;
 
     constructor() {
-        owner = msg.sender; // ví deploy là admin
+        owner = msg.sender;
     }
 
     modifier onlyOwner() {
@@ -26,37 +14,41 @@ contract WarrantyManager {
     }
 
     struct Order {
-        uint orderId;
-        uint productId;
-        uint amountVND;
+        uint256 orderId;
+        uint256 productId;
+        uint256 amountVND;
         address buyer;
-        uint createdAt;
+        uint256 createdAt;
     }
 
-    uint public orderCount;
-    mapping(uint => Order) private orders;
+    uint256 public orderCount;
+    mapping(uint256 => Order) private orders;
 
-    function createOrder(uint _productId, uint _amountVND) public {
+    function createOrder(
+        uint256 _productId,
+        uint256 _amountVND,
+        address _buyer
+    ) public onlyOwner {
         orderCount++;
 
         orders[orderCount] = Order({
             orderId: orderCount,
             productId: _productId,
             amountVND: _amountVND,
-            buyer: msg.sender,
+            buyer: _buyer,
             createdAt: block.timestamp
         });
     }
 
-    function getOrderByIndex(uint _index)
+    function getOrderByIndex(uint256 _index)
         public
         view
         returns (
-            uint,
-            uint,
-            uint,
+            uint256,
+            uint256,
+            uint256,
             address,
-            uint
+            uint256
         )
     {
         Order memory o = orders[_index];
@@ -67,10 +59,5 @@ contract WarrantyManager {
             o.buyer,
             o.createdAt
         );
-    }
-
-    // 🔐 ADMIN FUNCTION (demo)
-    function adminResetOrders() public onlyOwner {
-        orderCount = 0;
     }
 }
