@@ -1,0 +1,211 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: radial-gradient(circle at top, #020617, #020617);
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 36px;
+  color: #38bdf8;
+}
+
+.header p {
+  color: #94a3b8;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-card h3 {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.stat-card p {
+  font-size: 22px;
+  color: #e5e7eb;
+  font-weight: bold;
+}
+
+.card {
+  background: linear-gradient(180deg, #020617, #020617cc);
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+}
+
+input {
+  background: #020617;
+  border: 1px solid #334155;
+  color: #e5e7eb;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+button.primary {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: none;
+  color: #022c22;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button.primary:hover {
+  opacity: 0.9;
+}
+
+.order-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #38bdf8;
+}
+
+.order-meta {
+  margin-top: 8px;
+  color: #cbd5f5;
+  font-size: 14px;
+}
+
+.badge {
+  display: inline-block;
+  background: #22c55e22;
+  color: #22c55e;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.glass-card {
+  width: 420px;
+  background: rgba(2, 6, 23, 0.7);
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.card-title {
+  margin-bottom: 12px;
+  color: #38bdf8;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #020617;
+  color: #e5e7eb;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #38bdf8;
+}
+
+.primary-btn {
+  width: 100%;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #22c55e, #4ade80);
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.primary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.order-list {
+  margin-top: 30px;
+}
+
+.order-card {
+  text-align: left;
+}
+
+.mono {
+  font-family: monospace;
+  font-size: 13px;
+  word-break: break-all;
+}
