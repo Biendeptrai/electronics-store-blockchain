@@ -1,10 +1,10 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "D:\\Doan1\\electronics-store-blockchain\\smart-contract\\contracts\\ElectronicsStore.sol": {
-      "lastModificationDate": 1770226496258,
-      "contentHash": "cd0ed0e74fa92e2fd2e6841024abc21a",
-      "sourceName": "contracts/ElectronicsStore.sol",
+    "D:\\Congnghechuoikhoi\\electronics-store-blockchain\\smart-contract\\contracts\\WarrantyManager.sol": {
+      "lastModificationDate": 1770312407535,
+      "contentHash": "5e29d4cecbc7c9e398e9df042d43ef6c",
+      "sourceName": "contracts/WarrantyManager.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -34,7 +34,7 @@
         "^0.8.20"
       ],
       "artifacts": [
-        "ElectronicsStore"
+        "WarrantyManager"
       ]
     }
   }
